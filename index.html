@@ -61,7 +61,7 @@
       producerName: "Kido Beats",
       instagramUrl: "https://www.instagram.com/kidobeats/",
       tracks: [
-        { id:"cyu-01", title:"CYU", genre:"Other", bpm:"—", audioUrl:"./CYU.mp3", note:"Preescucha de CYU" }
+        { id:"cyu-01", title:"CYU", genre:"Other", bpm:"—", audioUrl:"https://raw.githubusercontent.com/FiyoRFL/BEATSTORE/main/CYU.mp3", note:"Preescucha de CYU" }
       ]
     };
     const $ = s => document.querySelector(s);
@@ -84,7 +84,7 @@
         row.append(play,info,bpm,contact);list.appendChild(row);
       });
     }
-    function playTrack(i){const t=CONFIG.tracks[i];if(!t||!t.audioUrl)return;if(currentIndex===i){audio.paused?audio.play():audio.pause();return;}currentIndex=i;audio.src=t.audioUrl;audio.play().catch(()=>{});$("#now-title").textContent=t.title;$("#toggle").disabled=false;$("#progress").disabled=false;$("#toggle").textContent="Ⅱ";render();}
+    function playTrack(i){const t=CONFIG.tracks[i];if(!t||!t.audioUrl)return;if(currentIndex===i){audio.paused?audio.play():audio.pause();return;}currentIndex=i;audio.src=t.audioUrl;audio.play().catch(()=>{ $("#now-sub").textContent="No se pudo cargar el audio. Recargá la página e intentá de nuevo."; });$("#now-title").textContent=t.title;$("#toggle").disabled=false;$("#progress").disabled=false;$("#toggle").textContent="Ⅱ";render();}
     function fmt(s){if(!Number.isFinite(s))return"0:00";return Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0")}
     $("#toggle").addEventListener("click",()=>{if(currentIndex<0)return;if(audio.paused)audio.play().catch(()=>{});else audio.pause()});
     $("#prev").addEventListener("click",()=>playTrack(Math.max(0,currentIndex-1)));
