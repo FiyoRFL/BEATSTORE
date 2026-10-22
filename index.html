@@ -33,11 +33,11 @@
 <body>
   <header class="wrap">
     <a class="brand" href="#" aria-label="BEATSTORE inicio"><span class="logo">B.</span><span>BEATSTORE</span></a>
-    <nav class="nav"><a class="hide" href="#catalog">Catálogo</a><a class="pill" href="#catalog">Explorar beats ↗</a></nav>
+    <nav class="nav"><a class="hide" href="#catalog">Catálogo</a><a class="pill" href="https://drive.google.com/drive/folders/1ofRUgq8SHgCTNnIarVEyzMqm42TR_VXC?usp=sharing" target="_blank" rel="noopener noreferrer">Abrir Drive ↗</a></nav>
   </header>
   <main class="wrap">
     <section class="hero">
-      <div><div class="eyebrow">Independent producer marketplace</div><h1>Find your<br><span style="color:var(--accent)">sound.</span></h1><p>Un lugar simple para descubrir instrumentales, escuchar sin interrupciones y conectar directamente con el productor.</p></div>
+      <div><div class="eyebrow">Independent producer marketplace</div><h1>Find your<br><span style="color:var(--accent)">sound.</span></h1><p>Escuchá instrumentales, explorá el catálogo y hablá directamente con Kido Beats para consultar precios y licencias.</p><p><a class="contact" style="display:inline-block;margin-top:10px;padding:12px 16px" href="https://drive.google.com/drive/folders/1ofRUgq8SHgCTNnIarVEyzMqm42TR_VXC?usp=sharing" target="_blank" rel="noopener noreferrer">Explorar carpeta de beats ↗</a> <a class="contact" style="display:inline-block;margin-top:10px;padding:12px 16px" href="https://ig.me/m/kidobeats" target="_blank" rel="noopener noreferrer">Contactar a Kido ↗</a></p></div>
       <div class="hero-art" aria-label="Visualización abstracta de audio"><div class="eyebrow">Listen different</div><div class="wave" id="wave"></div><div class="art-foot"><div><strong>BEATSTORE</strong><br><span>Tu próximo beat está acá.</span></div><span>PLAY YOUR WAY ↗</span></div></div>
     </section>
     <section class="catalog" id="catalog">
@@ -80,7 +80,7 @@
         play.addEventListener("click",()=>playTrack(t.index));
         const info=document.createElement("div");const name=document.createElement("div");name.className="track-name";name.textContent=t.title;const meta=document.createElement("div");meta.className="track-meta";meta.textContent=t.genre+" · "+(t.note||"Instrumental");info.append(name,meta);
         const bpm=document.createElement("div");bpm.className="bpm";bpm.textContent=t.bpm==="—"?"":t.bpm+" BPM";
-        const contact=document.createElement("a");contact.className="contact";contact.href=CONFIG.instagramUrl;contact.target="_blank";contact.rel="noopener noreferrer";contact.textContent="Consultar ↗";contact.addEventListener("click",()=>{try{navigator.clipboard.writeText("Hola, "+CONFIG.producerName+". Me interesa comprar el beat «"+t.title+"». ¿Me pasás el precio y las opciones de licencia?");}catch(e){}});
+        const contact=document.createElement("a");contact.className="contact";contact.href="https://ig.me/m/kidobeats";contact.target="_blank";contact.rel="noopener noreferrer";contact.textContent="Comprar ↗";contact.title="Abrir mensaje directo de Instagram para consultar por "+t.title;
         row.append(play,info,bpm,contact);list.appendChild(row);
       });
     }
