@@ -62,9 +62,7 @@
       driveApiUrl: "https://script.google.com/macros/s/AKfycbxky8pM9dlhR7uqU_pVPRuU-QvO4OKBFKdHPEPJirKHJ4jx0FDG9zz4wXLEODYXFjTG/exec",
       producerName: "FIYO RFL",
       instagramUrl: "https://www.instagram.com/fiyo_rfl/",
-      tracks: [
-        { id:"cyu-01", title:"CYU", genre:"Other", bpm:"—", audioUrl:"/BEATSTORE/CYU.mp3", note:"Preescucha de CYU" }
-      ]
+      tracks: []
     };
     const $ = s => document.querySelector(s);
     const audio = $("#audio");
@@ -120,7 +118,7 @@
       };
       const s = document.createElement("script");
       s.src = CONFIG.driveApiUrl + "?callback=" + callbackName + "&t=" + Date.now();
-      s.onerror = () => console.error("No se pudo conectar con el catálogo de Google Drive.");
+      s.onerror = () => { console.error("No se pudo conectar con el catálogo de Google Drive."); $("#empty").hidden = false; $("#empty").textContent = "No se pudo cargar el catálogo de Drive. Recargá la página en unos segundos."; };
       document.head.appendChild(s);
     }
     loadDriveCatalog();
