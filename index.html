@@ -58,6 +58,8 @@
     // Configuración inicial: reemplazar los ejemplos por el catálogo real de FIYO RFL.
     // audioUrl debe apuntar a una preescucha pública optimizada para reproducción web.
     const CONFIG = {
+      // Pegá acá la URL /exec de la implementación web de Google Apps Script.
+      driveApiUrl: "",
       producerName: "FIYO RFL",
       instagramUrl: "https://www.instagram.com/fiyo_rfl/",
       tracks: [
@@ -100,6 +102,28 @@
     $("#search").addEventListener("input",render);
     $("#filters").addEventListener("click",e=>{const b=e.target.closest("button[data-genre]");if(!b)return;activeGenre=b.dataset.genre;document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x===b));render()});
     render();
+
+    // Si se configura Apps Script, reemplaza la lista manual por todos los MP3 de Drive.
+    function loadDriveCatalog(){
+      if(!CONFIG.driveApiUrl || !/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(CONFIG.driveApiUrl)) return;
+      const callbackName = "__fiyoDriveCatalogCallback";
+      window[callbackName] = data => {
+        try {
+          if(!data || !Array.isArray(data.tracks)) throw new Error("Respuesta de catálogo inválida");
+          CONFIG.tracks = data.tracks;
+          CONFIG.producerName = data.producerName || "FIYO RFL";
+          $("#producer-name").textContent = CONFIG.producerName;
+          $("#now-sub").textContent = CONFIG.producerName + " · Preescucha";
+          render();
+        } catch(err) { console.error("FIYO RFL catalog:", err); }
+        finally { delete window[callbackName]; }
+      };
+      const s = document.createElement("script");
+      s.src = CONFIG.driveApiUrl + "?callback=" + callbackName + "&t=" + Date.now();
+      s.onerror = () => console.error("No se pudo conectar con el catálogo de Google Drive.");
+      document.head.appendChild(s);
+    }
+    loadDriveCatalog();
   </script>
 </body>
 </html>
