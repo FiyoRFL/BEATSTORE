@@ -25,7 +25,7 @@ function doGet(e) {
       title: title || name,
       genre: "Other",
       bpm: "—",
-      audioUrl: "https://drive.google.com/uc?export=download&id=" + encodeURIComponent(id),
+      audioUrl: "https://drive.google.com/uc?export=media&id=" + encodeURIComponent(id),
       note: "FIYO RFL · Preescucha"
     });
   }
