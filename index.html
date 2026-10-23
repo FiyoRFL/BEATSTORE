@@ -33,54 +33,8 @@
 <body>
   <header class="wrap">
     <a class="brand" href="#" aria-label="BEATSTORE inicio"><span class="logo">B.</span><span>BEATSTORE</span></a>
-    <nav class="nav"><a class="hide" href="#catalog">Catálogo</a><a class="pill" href="https://drive.google.com/drive/folders/1ofRUgq8SHgCTNnIarVEyzMqm42TR_VXC?usp=sharing" target="_blank" rel="noopener noreferrer">Abrir Drive ↗</a></nav>
+    <nav class="nav"><a class="hide" href="#catalog">Catálogo</a><a class="pill" href="#catalog">Escuchar ↗</a></nav>
   </header>
   <main class="wrap">
     <section class="hero">
-      <div><div class="eyebrow">Independent producer marketplace</div><h1>Find your<br><span style="color:var(--accent)">sound.</span></h1><p>Escuchá instrumentales, explorá el catálogo y hablá directamente con FIYO RFL para consultar precios y licencias.</p><p><a class="contact" style="display:inline-block;margin-top:10px;padding:12px 16px" href="https://drive.google.com/drive/folders/1ofRUgq8SHgCTNnIarVEyzMqm42TR_VXC?usp=sharing" target="_blank" rel="noopener noreferrer">Explorar carpeta de beats ↗</a> <a class="contact" style="display:inline-block;margin-top:10px;padding:12px 16px" href="https://ig.me/m/fiyo_rfl" target="_blank" rel="noopener noreferrer">Contactar a FIYO RFL ↗</a></p></div>
-      <div class="hero-art" aria-label="Visualización abstracta de audio"><div class="eyebrow">Listen different</div><div class="wave" id="wave"></div><div class="art-foot"><div><strong>BEATSTORE</strong><br><span>Tu próximo beat está acá.</span></div><span>PLAY YOUR WAY ↗</span></div></div>
-    </section>
-    <section class="catalog" id="catalog">
-      <div class="section-head"><div><div class="eyebrow">Discover</div><h2 id="producer-name">FIYO RFL</h2><p id="catalog-caption">Catálogo de instrumentales</p></div><input class="search" id="search" type="search" placeholder="Buscar beats..." aria-label="Buscar beats"></div>
-      <div class="filters" id="filters"><button class="filter active" data-genre="all">Todos los beats</button><button class="filter" data-genre="Boom Bap">Boom Bap</button><button class="filter" data-genre="Trap">Trap</button><button class="filter" data-genre="Drill">Drill</button><button class="filter" data-genre="Other">Otros</button></div>
-      <div class="track-list" id="tracks"></div>
-      <div class="empty" id="empty" hidden>No encontramos beats con esa búsqueda.</div>
-    </section>
-  </main>
-  <footer class="wrap"><span>BEATSTORE © <span id="year"></span></span><span>Una plataforma para productores independientes.</span></footer>
-  <section class="player" aria-label="Reproductor de audio">
-    <div class="player-info"><div class="now-title" id="now-title">Elegí un beat</div><div class="now-sub" id="now-sub">FIYO RFL · Preescucha</div></div>
-    <div class="player-center"><div class="controls"><button class="control" id="prev" aria-label="Beat anterior">⏮</button><button class="control main" id="toggle" aria-label="Reproducir" disabled>▶</button><button class="control" id="next" aria-label="Beat siguiente">⏭</button></div><div class="progress-row"><span id="elapsed">0:00</span><input id="progress" type="range" min="0" max="1000" value="0" aria-label="Progreso" disabled><span id="duration">0:00</span></div></div>
-    <div class="player-right"><span>PREVIEW PLAYER</span><span style="color:var(--accent)">●</span></div>
-  </section>
-  <audio id="audio" preload="none"></audio>
-  <script>
-    // Configuración inicial: reemplazar los ejemplos por el catálogo real de FIYO RFL.
-    const CONFIG = {
-      // ↓↓↓ PEGÁ ACÁ EL LINK /exec DE TU NUEVA IMPLEMENTACIÓN DE APPS SCRIPT ↓↓↓
-      driveApiUrl: "https://script.google.com/macros/s/AKfycbxky8pM9dlhR7uqU_pVPRuU-QvO4OKBFKdHPEPJirKHJ4jx0FDG9zz4wXLEODYXFjTG/exec",
-      producerName: "FIYO RFL",
-      instagramUrl: "https://www.instagram.com/fiyo_rfl/",
-      tracks: []
-    };
-    const $ = s => document.querySelector(s);
-    const audio = $("#audio");
-    let activeGenre = "all", currentIndex = -1;
-    $("#producer-name").textContent = CONFIG.producerName;
-    $("#now-sub").textContent = CONFIG.producerName + " · Preescucha";
-    $("#year").textContent = new Date().getFullYear();
-    const wave = $("#wave");
-    for(let i=0;i<48;i++){const bar=document.createElement("i");bar.style.setProperty("--h",(12+Math.abs(Math.sin(i*2.17)*Math.cos(i*.41))*78)+"%");wave.appendChild(bar);}
-    function visibleTracks(){const q=$("#search").value.trim().toLowerCase();return CONFIG.tracks.map((t,i)=>({...t,index:i})).filter(t=>(activeGenre==="all"||t.genre===activeGenre)&&((t.title+" "+t.genre+" "+t.bpm).toLowerCase().includes(q)));}
-    function render(){
-      const list=$("#tracks");list.innerHTML="";const items=visibleTracks();$("#empty").hidden=items.length>0;
-      items.forEach(t=>{const row=document.createElement("div");row.className="track";
-        const play=document.createElement("button");play.className="play";play.textContent=currentIndex===t.index&&!audio.paused?"Ⅱ":"▶";play.setAttribute("aria-label","Reproducir "+t.title);play.disabled=!t.audioUrl;play.title=t.audioUrl?"Reproducir":"La preescucha estará disponible al conectar el catálogo";
-        play.addEventListener("click",()=>playTrack(t.index));
-        const info=document.createElement("div");const name=document.createElement("div");name.className="track-name";name.textContent=t.title;const meta=document.createElement("div");meta.className="track-meta";meta.textContent=t.genre+" · "+(t.note||"Instrumental");info.append(name,meta);
-        const bpm=document.createElement("div");bpm.className="bpm";bpm.textContent=t.bpm==="—"?"":t.bpm+" BPM";
-        const contact=document.createElement("a");contact.className="contact";contact.href="https://ig.me/m/fiyo_rfl";contact.target="_blank";contact.rel="noopener noreferrer";contact.textContent="Comprar ↗";contact.title="Abrir mensaje directo de Instagram para consultar por "+t.title;
-        row.append(play,info,bpm,contact);list.appendChild(row);
-      });
-    }
-    function playTrack(i){const t=CONFIG
+      <div><div class="eyebrow">Independent producer marketplace</div><h1>Find your<br><span style="color:var(--accent)">sound.</span></h1><p>Escuchá instrumentales, explorá el catálogo y hablá directamente con FIYO RFL para consultar precios y licencias.</p><p><a class="contact" style="display:inline-block;margin-top:10px;padding:12px 16px" href="#catalog">Explorar catálogo ↓</a> <a class="contact" style="display:inline-block;margin
