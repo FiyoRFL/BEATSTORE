@@ -56,9 +56,8 @@
   <audio id="audio" preload="none"></audio>
   <script>
     // Configuración inicial: reemplazar los ejemplos por el catálogo real de FIYO RFL.
-    // audioUrl debe apuntar a una preescucha pública optimizada para reproducción web.
     const CONFIG = {
-      // Pegá acá la URL /exec de la implementación web de Google Apps Script.
+      // ↓↓↓ PEGÁ ACÁ EL LINK /exec DE TU NUEVA IMPLEMENTACIÓN DE APPS SCRIPT ↓↓↓
       driveApiUrl: "https://script.google.com/macros/s/AKfycbxky8pM9dlhR7uqU_pVPRuU-QvO4OKBFKdHPEPJirKHJ4jx0FDG9zz4wXLEODYXFjTG/exec",
       producerName: "FIYO RFL",
       instagramUrl: "https://www.instagram.com/fiyo_rfl/",
@@ -84,44 +83,4 @@
         row.append(play,info,bpm,contact);list.appendChild(row);
       });
     }
-    function playTrack(i){const t=CONFIG.tracks[i];if(!t||!t.audioUrl)return;if(currentIndex===i){if(audio.paused){audio.play().catch(showAudioError)}else{audio.pause()}return;}currentIndex=i;audio.pause();audio.src=t.audioUrl;audio.load();$("#now-title").textContent=t.title;$("#now-sub").textContent=CONFIG.producerName+" · Cargando audio…";$("#toggle").disabled=false;$("#progress").disabled=false;$("#toggle").textContent="▶";render();audio.play().then(()=>{$("#now-sub").textContent=CONFIG.producerName+" · Preescucha"}).catch(showAudioError);}
-    function showAudioError(){ $("#now-sub").textContent="No se pudo reproducir el audio. Recargá la página e intentá otra vez."; $("#toggle").textContent="▶"; }
-    function fmt(s){if(!Number.isFinite(s))return"0:00";return Math.floor(s/60)+":"+String(Math.floor(s%60)).padStart(2,"0")}
-    $("#toggle").addEventListener("click",()=>{if(currentIndex<0)return;if(audio.paused)audio.play().catch(()=>{});else audio.pause()});
-    $("#prev").addEventListener("click",()=>playTrack(Math.max(0,currentIndex-1)));
-    $("#next").addEventListener("click",()=>playTrack(Math.min(CONFIG.tracks.length-1,currentIndex+1)));
-    audio.addEventListener("canplay",()=>{$("#now-sub").textContent=CONFIG.producerName+" · Preescucha"});
-    audio.addEventListener("error",showAudioError);
-    audio.addEventListener("play",()=>{$("#toggle").textContent="Ⅱ";render()});
-    audio.addEventListener("pause",()=>{$("#toggle").textContent="▶";render()});
-    audio.addEventListener("timeupdate",()=>{if(audio.duration){$("#progress").value=audio.currentTime/audio.duration*1000;$("#elapsed").textContent=fmt(audio.currentTime);$("#duration").textContent=fmt(audio.duration)}});
-    audio.addEventListener("ended",()=>{if(currentIndex<CONFIG.tracks.length-1)playTrack(currentIndex+1);else $("#toggle").textContent="▶"});
-    $("#progress").addEventListener("input",()=>{if(audio.duration)audio.currentTime=Number($("#progress").value)/1000*audio.duration});
-    $("#search").addEventListener("input",render);
-    $("#filters").addEventListener("click",e=>{const b=e.target.closest("button[data-genre]");if(!b)return;activeGenre=b.dataset.genre;document.querySelectorAll(".filter").forEach(x=>x.classList.toggle("active",x===b));render()});
-    render();
-
-    // Si se configura Apps Script, reemplaza la lista manual por todos los MP3 de Drive.
-    function loadDriveCatalog(){
-      if(!CONFIG.driveApiUrl || !/^https:\/\/script\.google\.com\/macros\/s\/[^/]+\/exec$/.test(CONFIG.driveApiUrl)) return;
-      const callbackName = "__fiyoDriveCatalogCallback";
-      window[callbackName] = data => {
-        try {
-          if(!data || !Array.isArray(data.tracks)) throw new Error("Respuesta de catálogo inválida");
-          CONFIG.tracks = data.tracks;
-          CONFIG.producerName = data.producerName || "FIYO RFL";
-          $("#producer-name").textContent = CONFIG.producerName;
-          $("#now-sub").textContent = CONFIG.producerName + " · Preescucha";
-          render();
-        } catch(err) { console.error("FIYO RFL catalog:", err); }
-        finally { delete window[callbackName]; }
-      };
-      const s = document.createElement("script");
-      s.src = CONFIG.driveApiUrl + "?callback=" + callbackName + "&t=" + Date.now();
-      s.onerror = () => { console.error("No se pudo conectar con el catálogo de Google Drive."); $("#empty").hidden = false; $("#empty").textContent = "No se pudo cargar el catálogo de Drive. Recargá la página en unos segundos."; };
-      document.head.appendChild(s);
-    }
-    loadDriveCatalog();
-  </script>
-</body>
-</html>
+    function playTrack(i){const t=CONFIG
